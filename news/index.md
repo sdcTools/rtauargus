@@ -1,4 +1,43 @@
-# Changements
+# Changelog
+
+## rtauargus 1.3.3
+
+\[02/2026\]
+
+- Bug fixed
+
+Importing some files built by $\tau$-ARGUS produced errors because of
+encoding. From French users, this bug appeared during december and
+february months (“Décembre”, “Février”).
+
+The fix consists in blocking logbook importation during the process
+while this kind of error is produced. It has no effect on the
+suppression process, only on the information displayed in the console.
+
+## rtauargus 1.3.2
+
+\[01/2026\]
+
+- Add automatic analysis of links between indicators
+
+This version adds a new parameter to
+[`analyse_metadata()`](https://inseefrlab.github.io/rtauargus/reference/analyse_metadata.md)
+: `df_eq_indicator`. This parameter allows the user to specify links
+between indicators.
+
+An article presenting this new feature was presented at the JMS
+conference in 2025 (paper in French):
+<https://journees-methodologie-statistique.insee.net/analyse-automatique-des-metadonnees-pour-la-protection-des-donnees-tabulees/#presentation>
+
+## rtauargus 1.3.1
+
+\[07/2025\]
+
+Bug fixed:
+
+Previously, a list of 1-dimensional tables with no common cells hit by
+secondary suppression would have produced an error during the call of
+[`tab_multi_manager()`](https://inseefrlab.github.io/rtauargus/reference/tab_multi_manager.md).
 
 ## rtauargus 1.2.999-dev
 
