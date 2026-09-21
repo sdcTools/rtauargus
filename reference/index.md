@@ -27,6 +27,10 @@ data or from a set of linked tables.
   : tabulate grouped data with all margins, handling hierarchical
   variables
 
+- [`summarize_secret()`](https://inseefrlab.github.io/rtauargus/reference/summarize_secret.md)
+  : Provide the summary of the suppression pattern from a rtauargus
+  result
+
 ## Proceed to an automatic analysis
 
 Functions to help the links analysis between tables from a metadata
@@ -143,3 +147,6 @@ Mostly internal functions
   : Unnest Data Frames to Create a Usable Flat Format
 - [`wide_to_long()`](https://inseefrlab.github.io/rtauargus/reference/wide_to_long.md)
   : Convert Metadata from Wide to Long Format
+- [`explore_reduce_dims()`](https://inseefrlab.github.io/rtauargus/reference/explore_reduce_dims.md)
+  : Analytically computes all possible table splits and summarizes their
+  statistics.

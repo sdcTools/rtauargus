@@ -9,7 +9,7 @@ software with the good settings and gets back the result."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">rtauargus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.3.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@ software with the good settings and gets back the result."></head><body>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>auto-analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/auto_metadata.html">Automatic analysis of metadata</a></li>
-    <li><a class="dropdown-item" href="../articles/auto_metadata_fr.html">UNKNOWN TITLE</a></li>
+    <li><a class="dropdown-item" href="../articles/auto_metadata_fr.html">Analyse automatique des métadonnées</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>micro-wise</h6></li>
     <li><a class="dropdown-item" href="../articles/rtauargus_micro.html">&amp;tau;-Argus from R - microdata version</a></li>
@@ -50,7 +50,7 @@ software with the good settings and gets back the result."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Protect one table by suppressing cells with Tau-Argus</h1>
-      <small class="dont-index">Source: <a href="https://github.com/inseefrlab/rtauargus/blob/v-1.3.4/R/tab_rtauargus.R" class="external-link"><code>R/tab_rtauargus.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/inseefrlab/rtauargus/blob/master/R/tab_rtauargus.R" class="external-link"><code>R/tab_rtauargus.R</code></a></small>
       <div class="d-none name"><code>tab_rtauargus.Rd</code></div>
     </div>
 
@@ -77,13 +77,13 @@ software with the good settings and gets back the result.</p>
 <span>  maxscore <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  suppress <span class="op">=</span> <span class="st">"MOD(1,5,1,0,0)"</span>,</span>
 <span>  safety_rules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAN("</span>, <span class="va">ip</span>, <span class="st">")"</span><span class="op">)</span>,</span>
+<span>  summary_secret <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_batch_console <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  output_type <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  output_options <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  unif_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  split_tab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  nb_tab_option <span class="op">=</span> <span class="st">"smart"</span>,</span>
-<span>  limit <span class="op">=</span> <span class="fl">14700</span>,</span>
+<span>  split_limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -205,6 +205,10 @@ Chaîne de caractères en syntaxe batch Tau-Argus. Si le secret primaire
 a été traité dans un fichier d'apriori : utiliser "MAN(10)")</p></dd>
 
 
+<dt id="arg-summary-secret">summary_secret<a class="anchor" aria-label="anchor" href="#arg-summary-secret"></a></dt>
+<dd><p>If <code>TRUE</code>, a statistical summary of the suppression is provided along with the masked data.</p></dd>
+
+
 <dt id="arg-show-batch-console">show_batch_console<a class="anchor" aria-label="anchor" href="#arg-show-batch-console"></a></dt>
 <dd><p>to display the batch progress in the
 console. <br>
@@ -239,34 +243,29 @@ whether to reduce dimension to 3 while treating a table of dimension 4 or 5
 (default to <code>FALSE</code>)</p></dd>
 
 
-<dt id="arg-nb-tab-option">nb_tab_option<a class="anchor" aria-label="anchor" href="#arg-nb-tab-option"></a></dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> strategy to follow
-to choose variables automatically while splitting:</p><ul><li><p><code>"min"</code>: minimize the number of tables;</p></li>
-<li><p><code>"max"</code>: maximize the number of tables;</p></li>
-<li><p><code>"smart"</code>: minimize the number of tables under the constraint
-of their row count.</p></li>
-</ul></dd>
-
-
-<dt id="arg-limit">limit<a class="anchor" aria-label="anchor" href="#arg-limit"></a></dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> numeric, used to choose
-which variable to merge (if nb_tab_option = 'smart')
-and split table with a number of row above this limit in order to avoid
-tauargus failures</p></dd>
+<dt id="arg-split-limit">split_limit<a class="anchor" aria-label="anchor" href="#arg-split-limit"></a></dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> NULL or numeric, default <code>NULL</code>.
+Only used when <code>split_tab = TRUE</code>: maximum number of rows tolerated in a
+sub-table. If <code>NULL</code> (recommended), it is computed automatically via
+<code>auto_limit()</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>any parameter of the tab_rda, tab_arb or run_arb functions, relevant
-for the treatment of tabular.</p></dd>
+for the treatment of tabular. When <code>split_tab = TRUE</code>, can also be used to
+pass <code>nb_tab_option</code> (advanced, default <code>"smart"</code>, see <code>tab_rtauargus4</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If output_type equals to 4 and split_tab = FALSE,
+    <p>If output_type equals to 4 and summary_secret = FALSE and split_tab = FALSE,
 then the original tabular is returned with a new
 column called Status, indicating the status of the cell coming from Tau-Argus :
 "A" for a primary secret due to frequency rule, "B" for a primary secret due
 to dominance rule, "D" for secondary secret and "V" for no secret cell.</p>
+<p>If summary_secret = TRUE,
+then the function returns a list of two data.frames,
+including the masked data (<code>mask</code>) and the stats data (<code>stats</code>).</p>
 <p>If split_tab = TRUE,
 then the original tabular is returned with some new columns which are boolean
 variables indicating the status of a cell at each iteration of the protection
@@ -274,7 +273,8 @@ process as we get with <code><a href="tab_multi_manager.html">tab_multi_manager(
 denotes a cell that have to be suppressed. The last column is then the
 final status of the suppression process of the original table.</p>
 <p>If <code>split_tab = FALSE</code> and  <code>output_type</code> doesn't equal to <code>4</code>,
-then the raw result from tau-argus is returned.</p>
+then the raw result from tau-argus is written as a csv file in <code>dir_name</code>
+directory and <code>NULL</code> is returned to R.</p>
     </div>
     <div class="section level2">
     <h2 id="standardization-of-explanatory-variables-and-hierarchies">Standardization of explanatory variables and hierarchies<a class="anchor" aria-label="anchor" href="#standardization-of-explanatory-variables-and-hierarchies"></a></h2>
@@ -355,7 +355,7 @@ are removed.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

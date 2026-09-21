@@ -22,13 +22,13 @@ tab_rtauargus(
   maxscore = NULL,
   suppress = "MOD(1,5,1,0,0)",
   safety_rules = paste0("MAN(", ip, ")"),
+  summary_secret = FALSE,
   show_batch_console = FALSE,
   output_type = 4,
   output_options = "",
   unif_labels = TRUE,
   split_tab = FALSE,
-  nb_tab_option = "smart",
-  limit = 14700,
+  split_limit = NULL,
   ...
 )
 ```
@@ -148,6 +148,11 @@ tab_rtauargus(
   Tau-Argus. Si le secret primaire a été traité dans un fichier
   d'apriori : utiliser "MAN(10)")
 
+- summary_secret:
+
+  If `TRUE`, a statistical summary of the suppression is provided along
+  with the masked data.
+
 - show_batch_console:
 
   to display the batch progress in the console.  
@@ -178,36 +183,31 @@ tab_rtauargus(
   **\[experimental\]** boolean, whether to reduce dimension to 3 while
   treating a table of dimension 4 or 5 (default to `FALSE`)
 
-- nb_tab_option:
+- split_limit:
 
-  **\[experimental\]** strategy to follow to choose variables
-  automatically while splitting:
-
-  - `"min"`: minimize the number of tables;
-
-  - `"max"`: maximize the number of tables;
-
-  - `"smart"`: minimize the number of tables under the constraint of
-    their row count.
-
-- limit:
-
-  **\[experimental\]** numeric, used to choose which variable to merge
-  (if nb_tab_option = 'smart') and split table with a number of row
-  above this limit in order to avoid tauargus failures
+  **\[experimental\]** NULL or numeric, default `NULL`. Only used when
+  `split_tab = TRUE`: maximum number of rows tolerated in a sub-table.
+  If `NULL` (recommended), it is computed automatically via
+  `auto_limit()`.
 
 - ...:
 
   any parameter of the tab_rda, tab_arb or run_arb functions, relevant
-  for the treatment of tabular.
+  for the treatment of tabular. When `split_tab = TRUE`, can also be
+  used to pass `nb_tab_option` (advanced, default `"smart"`, see
+  `tab_rtauargus4`).
 
 ## Value
 
-If output_type equals to 4 and split_tab = FALSE, then the original
-tabular is returned with a new column called Status, indicating the
-status of the cell coming from Tau-Argus : "A" for a primary secret due
-to frequency rule, "B" for a primary secret due to dominance rule, "D"
-for secondary secret and "V" for no secret cell.
+If output_type equals to 4 and summary_secret = FALSE and split_tab =
+FALSE, then the original tabular is returned with a new column called
+Status, indicating the status of the cell coming from Tau-Argus : "A"
+for a primary secret due to frequency rule, "B" for a primary secret due
+to dominance rule, "D" for secondary secret and "V" for no secret cell.
+
+If summary_secret = TRUE, then the function returns a list of two
+data.frames, including the masked data (`mask`) and the stats data
+(`stats`).
 
 If split_tab = TRUE, then the original tabular is returned with some new
 columns which are boolean variables indicating the status of a cell at
@@ -218,7 +218,8 @@ column is then the final status of the suppression process of the
 original table.
 
 If `split_tab = FALSE` and `output_type` doesn't equal to `4`, then the
-raw result from tau-argus is returned.
+raw result from tau-argus is written as a csv file in `dir_name`
+directory and `NULL` is returned to R.
 
 ## Standardization of explanatory variables and hierarchies
 
